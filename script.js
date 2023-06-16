@@ -21,7 +21,6 @@ helpButton.addEventListener('click', function() {
 });
 
 closeButton.addEventListener('click', function() {
-  
   popup.style.display = 'none';
 });
 
@@ -30,8 +29,6 @@ fetch('courses.csv')
   .then(csvData => {
     const lines = csvData.split('\n');
     const regex = /"(.*?)"/g;
-    
-    // Loops through each line of csv and adds values to the array 
     for (let i = 1; i < lines.length; i++) {
       const fields = lines[i].match(regex).map(match => match.slice(1, -1));
       if (fields[10].length < 8){continue;}
@@ -54,6 +51,7 @@ function addDropDownOptions(){
     option.value = fieldNames[i];
     dropDown1.appendChild(option);
   }
+  selectedField = fieldNames[0]
 }
 
 // Extract unique room numbers from CSV
@@ -115,8 +113,10 @@ dropDown2.addEventListener('change', function() {
 const heatMapCheckbox = document.getElementById('heatmap');
 
 heatMapCheckbox.addEventListener('change', function() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
   createChart();
 });
+
 
 function addCourses(){
   for (let i = 1; i < data.length; i++) {
@@ -135,6 +135,7 @@ function addCourses(){
     };
     activeCourses.push(course);
   }
+  context.clearRect(0, 0, canvas.width, canvas.height);
   createChart();
 }
 
@@ -146,6 +147,7 @@ function removeCourses(){
   activeCourses = activeCourses.filter((course) => {
     return !crns.has(course.crn);
   });
+  context.clearRect(0, 0, canvas.width, canvas.height);
   createChart();
 }
 
@@ -159,10 +161,6 @@ function timeToMinutes(time) {
   return parseFloat(hour) * 60  + parseFloat(minute);
 }
 
-const chartHeight = 500;
-const chartWidth = 600;
-const timeLabelWidth = 100;
-const dayLabelHeight = 50;
 const hoursOnLabel = 14;
 const dayStart = 8;
 
@@ -178,6 +176,14 @@ let mouseTimer;
 // Add event listener to track mouse movement on the canvas
 canvas.addEventListener('mousemove', handleMouseMove);
 
+
+
+
+let timeLabelWidth;
+let dayLabelHeight;
+let chartHeight;
+let chartWidth;
+
 //Adds info from activeCourses being hovered over by mouse to a div under the canvas
 function handleMouseMove(event) {
   clearTimeout(mouseTimer);
@@ -187,8 +193,11 @@ function handleMouseMove(event) {
     const mouseY = event.clientY - rect.top;
 
     const dayOfWeek = dayCheck[Math.floor(((mouseX - timeLabelWidth)/ chartWidth)*5)];
-    let timeOfDay = ((((mouseY-dayLabelHeight)/chartHeight) * hoursOnLabel) + dayStart) *100;
-    timeOfDay = Math.round((timeOfDay - (timeOfDay % 100)) + ((timeOfDay%100)*.6));
+    let timeOfDay = (((mouseY - dayLabelHeight) / chartHeight) * hoursOnLabel) + dayStart;
+    let hourOfDay = Math.floor(timeOfDay);
+    let minuteOfDay = Math.round((timeOfDay - hourOfDay) * 60);
+    timeOfDay = hourOfDay * 100 + minuteOfDay;
+
     let mousedOnCourses = [];
     activeCourses.forEach((course) => {
       if (course.startTime < timeOfDay && course.endTime > timeOfDay && course.days.includes(dayOfWeek)){
@@ -197,39 +206,24 @@ function handleMouseMove(event) {
     });
     if (activeCourses.length > 0) {showTooltip(mousedOnCourses,event);} 
     else {tooltipContainer.style.display = 'none';}
-  }, 800); // Adjusts the delay duration
+  }, 700); 
 }
 
-function showTooltip(mousedOnCourses, event) {
-  // Clear previous content
-  tooltipContainer.innerHTML = '';
 
+function showTooltip(mousedOnCourses, event) {
+  tooltipContainer.innerHTML = '';
   // Create a new tooltip element for each course
   mousedOnCourses.forEach(course => {
-    const courseElement = document.createElement('div');
-    courseElement.classList.add('course');
-    courseElement.style.color = '#f5f5f5';
-    courseElement.style.backgroundColor = '#6b2c2c';
-    
-    const courseNameElement = document.createElement('span');
-    courseNameElement.textContent = course.courseName;
-    const courseTimeElement = document.createElement('span');
-    courseTimeElement.textContent = course.startTime + ' - ' + course.endTime;
-    
-    courseElement.appendChild(courseNameElement);
-    courseElement.appendChild(courseTimeElement);
-
-    tooltipContainer.appendChild(courseElement);
+    const tooltip = document.createElement('div');
+    tooltip.textContent = course.courseName + "  " + course.startTime + ' - ' + course.endTime;
+    tooltipContainer.appendChild(tooltip);
   });
   tooltipContainer.style.top = (event.clientY + 10) + 'px';
   tooltipContainer.style.left = (event.clientX + 10) + 'px';
   tooltipContainer.style.display = 'block';
 }
 function compareStringsUpToFirstNumber(str1, str2) {
-  const regex = /\d/;
-  const index1 = str1.search(regex);
-  const index2 = str2.search(regex);
-  return str1.substring(0, index1) === str2.substring(0, index2);
+  return str1.substring(0, str1.search(/\d/)) === str2.substring(0, str1.search(/\d/));
 }
 
 const warningMessages = document.getElementById('warningMessages');
@@ -267,29 +261,29 @@ function validateNewCourse(newCourse){
   }
 }
 
+const courseName = document.getElementById('courseName');
+const newStartTime = document.getElementById('startTime');
+const newEndTime = document.getElementById('endTime');
+const roomNumber = document.getElementById('roomNumberInput')
+const days = document.getElementById('daysInput');
+
 const courseForm = document.getElementById('courseForm');
 courseForm.addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent form submission
-  const courseName = document.getElementById('courseName').value;
-  const newStartTime = document.getElementById('startTime').value;
-  const newEndTime = document.getElementById('endTime').value;
-  const roomNumber = document.getElementById('roomNumberInput').value;
-  const days = document.getElementById('daysInput').value;
+
   const newCourse = {
-    courseName: courseName,
-    startTime: newStartTime,
-    endTime: newEndTime,
-    roomNumber: roomNumber,
-    days: days,
+    courseName: courseName.value,
+    startTime: newStartTime.value,
+    endTime: newEndTime.value,
+    roomNumber: roomNumber.value,
+    days: days.value,
   };
   validateNewCourse(newCourse);
   this.reset();
 });
 
 function createChart() {
-  canvas.width = chartWidth + timeLabelWidth;
-  canvas.height = chartHeight + dayLabelHeight;
-
+   dayLabelHeight = 22;
   // Draw time labels
   const timeLabels = Array.from({ length: hoursOnLabel }, (_, index) => {
     const hour = ((index+dayStart-1)%12+1).toString().padStart(2, "0");
@@ -298,23 +292,25 @@ function createChart() {
   context.font = "14px Arial";
   context.textBaseline = "middle";
   context.textAlign = "right";
+  timeLabelWidth = context.measureText(timeLabels[0]).width;
+
+  chartHeight = canvas.height - dayLabelHeight
+  chartWidth = canvas.width - timeLabelWidth
   timeLabels.forEach((label, index) => {
-    const x = timeLabelWidth - 10;
+    const x = timeLabelWidth;
     const y = (index * chartHeight) / hoursOnLabel + dayLabelHeight;
     context.fillText(label, x, y);
   });
-
   // Draw day labels
-  context.font = "bold 16px Arial";
+  context.font = "bold "+dayLabelHeight+"px Arial";
   context.textBaseline = "middle";
   context.textAlign = "center";
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  days.forEach((day, index) => {
+  const dayLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  dayLabels.forEach((day, index) => {
     const x = (index * chartWidth) / 5 + timeLabelWidth + chartWidth / 10;
     const y = dayLabelHeight / 2;
     context.fillText(day, x, y);
   });
-
   // Draw activeCourses
   activeCourses.forEach((course) => {
     const startMinutes = timeToMinutes(course.startTime);
@@ -327,15 +323,13 @@ function createChart() {
       const y = dayLabelHeight + (((startMinutes-(dayStart*60))/(hoursOnLabel*60)) * chartHeight);
       const width = chartWidth / 5;
       const height = (durationMinutes * chartHeight) / (60*hoursOnLabel);
-      if(heatMapCheckbox.checked){
-        context.fillStyle = `rgba(255, 0, 0, .15)`;
-      }
-      else{
-        context.fillStyle = `rgba(255, 0, 0, 1)`;
-      }
+      const transparent = heatMapCheckbox.checked?.15:1;
+      context.fillStyle = `rgba(255, 0, 0, ${transparent})`;
       context.fillRect(x, y, width, height);
+      
     }
   });
+  context.fillStyle = `rgba(0, 0, 0, 1)`;
 }
 
 window.addEventListener("load", createChart);
