@@ -2,8 +2,6 @@
 canvas {
     border: 1px solid #ccc;
     background-color: rgb(255, 255, 255);
-    width: 100%;
-    height: auto;
 }
 
 .container {
@@ -189,10 +187,12 @@ div.tooltip {
   z-index: 9998;
   display: none;
 }
-div.tooltip.course{
+div.tooltip > *{
   background-color: #6e1c1c;
   color: #fff;
 }
+
+
 
 
 .popup {
