@@ -177,8 +177,6 @@ let mouseTimer;
 canvas.addEventListener('mousemove', handleMouseMove);
 
 
-
-
 let timeLabelWidth;
 let dayLabelHeight;
 let chartHeight;
@@ -269,7 +267,7 @@ const days = document.getElementById('daysInput');
 
 const courseForm = document.getElementById('courseForm');
 courseForm.addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent form submission
+  event.preventDefault(); 
 
   const newCourse = {
     courseName: courseName.value,
@@ -311,7 +309,7 @@ function createChart() {
     const y = dayLabelHeight / 2;
     context.fillText(day, x, y);
   });
-  // Draw activeCourses
+  
   activeCourses.forEach((course) => {
     const startMinutes = timeToMinutes(course.startTime);
     const endMinutes = timeToMinutes(course.endTime);
