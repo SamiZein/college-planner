@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Dynamic Time Chart</title>
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <button id="helpButton">?</button>
@@ -13,14 +12,13 @@
       <div class="popup-content">
         <h2>Page Functionality</h2>
         <p>
-          This is a tool to help administrators add courses and faculty to plan events around those courses.
-          You can add courses to the chart by field value via the drop down menus.
-          Adminstrators can use the form on the side to see if a new course they want to register conflicts with exisiting courses.
+          This is a tool to help administrators add courses and faculty to plan events around those
+          courses. You can add courses to the chart by field value via the drop down menus.
+          Adminstrators can use the form on the side to see if a new course they want to register
+          conflicts with exisiting courses.
         </p>
-        <button id="closeButton">Close</button>
       </div>
     </div>
-
 
     <label for="Fields">Choose a Field: </label>
     <select name="Fields" id="fields"></select>
@@ -32,7 +30,7 @@
 
     <button onclick="removeCourses()" class="remove-button">Remove</button>
 
-    <input type="checkbox" id="heatmap" checked>
+    <input type="checkbox" id="heatmap" checked />
     <label for="heatmap" class="custom-checkbox">Heat Map</label>
 
     <div class="container">
@@ -42,45 +40,38 @@
           <h2>New Course Entry</h2>
           <form id="courseForm">
             <label for="courseName">Course Name:</label>
-            <input type="text" id="courseName" required>
-            
+            <input type="text" id="courseName" required />
+
             <div class="time-inputs">
               <div class="input-group">
                 <label for="startTime">Start Time:</label>
-                <input type="time" id="startTime" step="60" required>
+                <input type="time" id="startTime" step="60" required />
               </div>
-              
+
               <div class="input-group">
                 <label for="endTime">End Time:</label>
-                <input type="time" id="endTime" step="60" required>
+                <input type="time" id="endTime" step="60" required />
               </div>
             </div>
 
             <label for="daysInput">Days of the Week:</label>
-            <input type="text" id="daysInput">     
+            <input type="text" id="daysInput" />
 
             <label for="roomNumberInput">Room Number:</label>
-            <input type="text" id="roomNumberInput" list="roomNumberOptions">
-            <datalist id="roomNumberOptions">
-            </datalist>
-            
+            <input type="text" id="roomNumberInput" list="roomNumberOptions" />
+            <datalist id="roomNumberOptions"> </datalist>
+
             <button type="submit" id="formButton">Submit Entry</button>
           </form>
         </div>
-
+        <label for="warningMessages">Warnings:</label>
+        <div id="warningMessages" class="row"></div>
+        <label for="conflictMessages">Conflicts:</label>
+        <div id="conflictMessages" class="row"></div>
       </div>
-
+      <div class="tooltip"></div>
     </div>
-    <label for="warningMessages">Warnings:</label>
-    <div id="warningMessages" class="row"></div>
 
-    <label for="conflictMessages">Conflicts:</label>
-    <div id="conflictMessages" class="row"></div>
-    
-    
-    <div class="tooltip">
-    </div>
     <script src="script.js"></script>
   </body>
 </html>
- 

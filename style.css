@@ -1,264 +1,124 @@
-/* Canvas Styles */
-canvas {
-    border: 1px solid #ccc;
-    background-color: rgb(255, 255, 255);
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== LAYOUT ===== */
+body {
+  padding: 20px;
+  background: #f0f2f5;
 }
 
 .container {
-  position: relative;
-  display: flex;
-  flex-direction: row; 
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-
-.columns {
-  display: flex;
-  flex-direction: column; 
+/* ===== CHART ===== */
+#time-chart {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-
-
-
-/*  Form Styles */
-
+/* ===== FORM ===== */
 .form-container {
-  background-color: #a69a74;
-  margin-bottom: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .form-container h2 {
-  margin-top: 0;
-}
-
-.form-container form {
-  margin-top: 20px;
-}
-  
-.form-container label,
-.form-container input {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.form-container button {
-  padding: 10px 20px;
-}
-
-.time-inputs {
-  display: flex;
+  color: #2c3e50;
+  margin-bottom: 15px;
 }
 
 .input-group {
-  flex: 1;
+  margin-bottom: 15px;
 }
 
-input[type="time"]::-webkit-datetime-edit-seconds-field {
-  display: none;
-  padding: 0;
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #34495e;
+  font-weight: 500;
 }
 
-input[type="time"]::-webkit-datetime-edit-ampm-field {
-  display: none;
-  padding: 0;
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
 }
 
-
-#messageContainer {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #ffc107;
-  color: #000;
+/* ===== BUTTONS ===== */
+button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
 }
 
-
-
-
-
-
-/* Course Styles */
-.course {
-  background-color: #6fa8dc;
-  color: #000;
-  font-size: 14px;
-  font-family: Arial;
-  text-align: center;
-  padding: 4px;
+button:hover {
   opacity: 0.9;
 }
 
-/* Day Label Styles */
-.day-label {
-  font-size: 16px;
-  font-weight: bold;
-  font-family: Arial;
-  text-align: center;
+.add-button {
+  background: #3498db;
+  color: white;
 }
-
-/* Time Label Styles */
-.time-label {
-  font-size: 14px;
-  font-family: Arial;
-  text-align: right;
+.remove-button {
+  background: #e74c3c;
+  color: white;
 }
-
-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: #fff;
-  width: 250px;
-}
-
-select:hover,
-select:focus {
-  border-color: #888;
-  box-shadow: 0 0 5px #888;
-}
-
-
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-}
-.add-button:hover {
-  background-color: #0056b3;
-}
-.add-button{
-  background-color: #007bff;
-  color: #fff;
-}
-.remove-button:hover {
-  background-color: #c20303;
-}
-.remove-button{
-  background-color: #ed0000;
-  color: #fff;
-}
-
 #formButton {
-  background-color: #545454;
+  background: #2ecc71;
+  color: white;
 }
-
-/* Hide the default checkbox */
-input[type="checkbox"] {
-  display: none;
-}
-
-/* Style the custom checkbox */
-input[type="checkbox"] + label {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: background-color 0.3s ease;
-}
-
-/* Apply solid color to unchecked state */
-input[type="checkbox"] + label {
-  background-color: #f5f5f5;
-  transition: background-color 0.3s ease;
-}
-
-/* Apply gradient to checked state */
-input[type="checkbox"]:checked + label {
-  background: linear-gradient(30deg, #ff5f6d, #fffcf7);
-}
-
 
 div.tooltip {
   position: absolute;
   z-index: 9998;
   display: none;
 }
-div.tooltip > *{
-  background-color: #6e1c1c;
-  color: #fff;
+/* ===== TOOLTIPS/MESSAGES ===== */
+.tooltip {
+  background: #2c3e50;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 
-
-
-
-.popup {
-  display: none;
-  z-index: 9998;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-
+#warningMessages {
+  background: #f1c40f;
+  color: #2c3e50;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+#conflictMessages {
+  background: #e74c3c;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
 }
 
+/* ===== HELP POPUP ===== */
 .popup-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  background-color: #fff;
-  text-align: center;
-}
-
-.popup h2 {
-  margin-top: 0;
-}
-
-.popup button {
-  margin-top: 20px;
-  background-color: #595959;
-}
-
-#helpButton {
-  background-color: #636363;
-  color: #fff;
-  padding: 3px 8px;
-  font-size: 16px;
-  border: none;
-  border-radius: 15px;
-
-  cursor: pointer;
-}
-
-#helpButton:hover {
-  background-color: #484848;
-}
-
-
-.row{
-  display: flex;
-  flex-direction: row;
-}
-
-.row *{
-  color: #4a4a4a;
-  padding: 3px 8px;
-  font-size: 16px;
-  border: none;
-  border-radius: 15px;
-}
-
-#warningMessages *{
-  background-color: #ffd54a;
-}
-
-#conflictMessages *{
-  background-color: #fd2121;
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
 }
