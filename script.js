@@ -8,6 +8,7 @@ const roomNumbers = new Set();
 const dropDown1 = document.getElementById("fields");
 const dropDown2 = document.getElementById("values");
 let selectedField;
+let selectedValue;
 
 const helpButton = document.getElementById("helpButton");
 const popup = document.getElementById("popup");
@@ -23,7 +24,6 @@ fetch("courses.csv")
     const regex = /"(.*?)"/g;
     for (let i = 1; i < lines.length; i++) {
       const values = lines[i].match(regex).map((match) => match.slice(1, -1));
-
       //Check time formatted properly
       const time = values[10];
       if (time.length != 11) {
@@ -36,12 +36,13 @@ fetch("courses.csv")
       if (time.slice(4, 7) != " - ") {
         continue;
       }
-
       data.push(values);
     }
     //Add options to input fields used in the drop down menus based on values in csv
     fieldNames = lines[0].match(regex).map((match) => match.slice(1, -1));
-    addDropDownOptions();
+    addFieldsToDropDown();
+    selectedField = fieldNames.indexOf(dropDown1.value);
+    updateValuesInDropDown();
     addOptionsToRoomInput();
   })
   .catch((error) => {
@@ -49,17 +50,16 @@ fetch("courses.csv")
   });
 
 // Generates options for first drop down box
-function addDropDownOptions() {
+function addFieldsToDropDown() {
   for (let i = 0; i < fieldNames.length; i++) {
     const option = document.createElement("option");
     option.text = fieldNames[i];
     option.value = fieldNames[i];
     dropDown1.appendChild(option);
   }
-  selectedField = fieldNames[0];
 }
 
-// Extract unique room numbers from CSV
+// Adds unique room numbers from csv to room input in registration form
 function addOptionsToRoomInput() {
   for (let i = 1; i < data.length; i++) {
     const roomNumber = data[i][11].trim(); // Modify index based on your CSV structure
@@ -73,7 +73,6 @@ function addOptionsToRoomInput() {
   });
 }
 
-// Event listener for input changes
 roomNumberInput.addEventListener("input", function () {
   const input = this.value.toLowerCase();
   const options = roomNumberOptions.getElementsByTagName("option");
@@ -91,16 +90,20 @@ roomNumberInput.addEventListener("input", function () {
   }
 });
 
-//Updates second drop down box
 dropDown1.addEventListener("change", function () {
   selectedField = fieldNames.indexOf(this.value);
+  updateValuesInDropDown();
+});
+
+function updateValuesInDropDown() {
   const uniqueValues = new Set();
   for (let row = 1; row < data.length; row++) {
+    data[row][selectedField];
     uniqueValues.add(data[row][selectedField]);
   }
-  var i,
-    L = dropDown2.options.length - 1;
-  for (i = L; i >= 0; i--) {
+  console.log(uniqueValues);
+  var L = dropDown2.options.length - 1;
+  for (let i = L; i >= 0; i--) {
     dropDown2.remove(i);
   }
   uniqueValues.forEach(function (value) {
@@ -109,9 +112,9 @@ dropDown1.addEventListener("change", function () {
     option.value = value;
     dropDown2.appendChild(option);
   });
-});
+  selectedValue = dropDown2.value;
+}
 
-let selectedValue;
 dropDown2.addEventListener("change", function () {
   selectedValue = this.value;
 });
