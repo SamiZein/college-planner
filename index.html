@@ -21,23 +21,25 @@
       </div>
     </div>
 
-    <h2>Course Visualizer</h2>
-
-    <label for="Fields">Choose a Field: </label>
-    <select name="Fields" id="fields"></select>
-
-    <label for="Values">Choose a value: </label>
-    <select name="Values" id="values"></select>
-
-    <button onclick="addCourses()" class="add-button">Add</button>
-
-    <button onclick="removeCourses()" class="remove-button">Remove</button>
-
-    <input type="checkbox" id="heatmap" checked />
-    <label for="heatmap" class="custom-checkbox">Heat Map</label>
-
     <div class="container">
-      <canvas id="time-chart" height="500" width="600"></canvas>
+      <div>
+        <h2>Course Visualizer</h2>
+
+        <label for="Fields">Choose a Field: </label>
+        <select name="Fields" id="fields"></select>
+
+        <label for="Values">Choose a value: </label>
+        <select name="Values" id="values"></select>
+
+        <button onclick="addCourses()" class="add-button">Add</button>
+
+        <button onclick="removeCourses()" class="remove-button">Remove</button>
+        <div>
+          <input type="checkbox" id="heatmap" checked />
+          <label for="heatmap" class="custom-checkbox">Heat Map</label>
+        </div>
+        <canvas id="time-chart" height="500" width="600"></canvas>
+      </div>
       <div class="columns">
         <div class="form-container">
           <h2>New Course Entry</h2>

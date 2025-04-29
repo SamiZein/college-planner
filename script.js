@@ -229,6 +229,10 @@ function handleMouseMove(event) {
 
 function showTooltip(mousedOnCourses, event) {
   tooltipContainer.innerHTML = "";
+  if (mousedOnCourses.length == 0) {
+    tooltipContainer.style.display = "none";
+    return;
+  }
   // Create a new tooltip element for each course
   mousedOnCourses.forEach((course) => {
     const tooltip = document.createElement("div");
